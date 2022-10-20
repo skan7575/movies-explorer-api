@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const usersRoutes = require("./routes/usersRoutes");
 const movieRouter = require("./routes/movieRoutes");
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const auth = require('./middlewares/auth');
 const {createUser, login} = require("./controllers/users");
 const {NotFoundError} = require("./errors/NotFoundError");
@@ -16,6 +17,7 @@ const {PORT = 3000} = process.env;
 const app = express();
 app.use(bodyParser.json());
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
+app.use(requestLogger);
 
 app.post('/signup', createUser)
 app.post('/signin', login)
