@@ -1,22 +1,18 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const Movie = require('../models/movie')
-const {SignUpError} = require("../errors/SignUpError");
-const {ValidationError} = require("../errors/ValidationError");
-const {NotFoundError} = require("../errors/NotFoundError");
-const User = require("../models/users");
-const {ForbiddenError} = require("../errors/ForbiddenError");
+const Movie = require('../models/movie');
+const { ValidationError } = require('../errors/ValidationError');
+const { NotFoundError } = require('../errors/NotFoundError');
+const { ForbiddenError } = require('../errors/ForbiddenError');
 
 const getMoivesListCurrentUser = (req, res, next) => {
-  const owner = req.user._id
-  Movie.find({owner})
+  const owner = req.user._id;
+  Movie.find({ owner })
     .then((cards) => {
-      res.status(200).send(cards)
+      res.status(200).send(cards);
     })
     .catch((err) => {
       next(err);
-    })
-}
+    });
+};
 
 const createMovies = (req, res, next) => {
   const owner = req.user._id;
@@ -26,9 +22,9 @@ const createMovies = (req, res, next) => {
       res.status(201).send({ data: movie });
     })
     .catch((err) => {
-     if(err.name === 'ValidationError') {
-       next(new ValidationError('Ошибка валидации, проверьте поля для заполнения'))
-     } else next(err) ;
+      if (err.name === 'ValidationError') {
+        next(new ValidationError('Ошибка валидации, проверьте поля для заполнения'));
+      } else next(err);
     });
 };
 
@@ -56,5 +52,5 @@ const deleteMovies = (req, res, next) => {
 module.exports = {
   createMovies,
   deleteMovies,
-  getMoivesListCurrentUser
-}
+  getMoivesListCurrentUser,
+};
