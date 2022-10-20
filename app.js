@@ -1,3 +1,8 @@
+require('dotenv').config();
+const {
+  celebrate, Joi, errors,
+} = require('celebrate');
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -19,13 +24,25 @@ app.use(bodyParser.json());
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb');
 app.use(requestLogger);
 
-app.post('/signup', createUser)
-app.post('/signin', login)
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30),
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  })
+}), createUser)
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), login);
 app.use('/users', auth, usersRoutes)
 app.use('/movies', auth, movieRouter)
 app.use('*', auth, (req, res, next) => {
   next(new NotFoundError('Маршрут не найден'));
 });
+app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => { handleErrors(err, res, next); });
 
