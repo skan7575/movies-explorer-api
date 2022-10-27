@@ -25,6 +25,13 @@ const UpdateCurrentUser = async (req, res, next) => {
   const userId = req.user._id;
   const { email, name } = req.body;
   try {
+    User.findOne({ email })
+      .then((user) => {
+        if (user) {
+          next(new SignUpError('Пользователь с данным email уже существует'));
+        }
+        return res;
+      });
     const user = await User.findByIdAndUpdate(
       userId,
       { name, email },
