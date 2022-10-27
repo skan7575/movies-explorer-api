@@ -4,11 +4,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const {
- errors,
+  errors,
 } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { handleErrors } = require('./middlewares/handleErrors');
-const routes = require('./routes')
+const routes = require('./routes');
 
 // создаем объект приложения
 const { PORT = 3000 } = process.env;
@@ -19,7 +19,7 @@ app.use(cors({
 }));
 mongoose.connect('mongodb://localhost:27017/moviesdb');
 app.use(requestLogger);
-app.use(routes)
+app.use(routes);
 app.use(errorLogger);
 app.use(errors());
 app.use((err, req, res, next) => { handleErrors(err, res, next); });

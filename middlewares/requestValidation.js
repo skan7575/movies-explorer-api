@@ -1,6 +1,7 @@
-const { celebrate, Joi, CelebrateError} = require('celebrate');
-const {BAD_URL} = require("../utils/constants");
+const { celebrate, Joi, CelebrateError } = require('celebrate');
 const isURL = require('validator/lib/isURL');
+const { BAD_URL } = require('../utils/constants');
+
 const validateDeleteMovie = celebrate({
   params: Joi.object().keys({
     movieId: Joi.string().required().alphanum().length(24)
@@ -31,11 +32,11 @@ const validateSignup = celebrate({
 });
 
 const validateUpdateCurrentUser = celebrate({
-    body: Joi.object().keys({
-      name: Joi.string().min(2).max(30).required(),
-      email: Joi.string().email().required(),
-    }),
-  })
+  body: Joi.object().keys({
+    name: Joi.string().min(2).max(30).required(),
+    email: Joi.string().email().required(),
+  }),
+});
 const validateCreateMovie = celebrate({
   body: Joi.object().keys({
     country: Joi.string().required().min(1).max(100),
@@ -56,5 +57,5 @@ module.exports = {
   validateUpdateCurrentUser,
   validateCreateMovie,
   validateSignup,
-  validateLogin
-}
+  validateLogin,
+};
