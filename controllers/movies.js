@@ -35,7 +35,7 @@ const deleteMovies = (req, res, next) => {
   Movie.findById(movieId)
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError('Фильм по с таким ID не существует');
+        throw new NotFoundError('Фильм с таким ID не существует');
       }
       if (movie.owner.toString() !== owner) {
         throw new ForbiddenError('Вы не можете удалить данный фильм');

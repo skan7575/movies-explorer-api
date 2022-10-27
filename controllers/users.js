@@ -12,7 +12,7 @@ const getCurrentUser = (req, res, next) => {
   User.findById(id)
     .then(((user) => {
       if (!user) {
-        throw NotFoundError('Пользователь по указанному _id не найден.');
+        throw new NotFoundError('Пользователь по указанному _id не найден.');
       }
       return res.send(user);
     }))
@@ -31,7 +31,7 @@ const UpdateCurrentUser = async (req, res, next) => {
       { new: true, runValidators: true },
     );
     if (!user) {
-      throw NotFoundError('Пользователь по указанному _id не найден.');
+      throw new NotFoundError('Пользователь по указанному _id не найден.');
     }
     return res.status(200).send(user);
   } catch (err) {
